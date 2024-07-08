@@ -34,6 +34,10 @@ function toggleModal () {
 }
 
 function updateMuscles(muscleGroup) {
+  // muscles.filter((val) => val !== muscleGroup) creates a new array that includes all the elements from the muscles array except the muscleGroup being checked.
+  // filter is an array method that creates a new array with all elements that pass the test implemented by the provided function.
+  // In this case, the function (val) => val !== muscleGroup returns true for all elements that are not equal to muscleGroup, effectively removing muscleGroup from the array.
+
   if (muscles.includes(muscleGroup)) {
     setMuscles(muscles.filter((val) => val !== muscleGroup));
     return;
@@ -42,16 +46,14 @@ function updateMuscles(muscleGroup) {
   if (muscles.length > 2) {
     return;
   }
-
+  // Single selection mode for non-'individual' poison
   if (poison !== "individual") {
     setMuscles([muscleGroup]);
     // setShowModal(false);
     return;
   }
-
+  // Add muscle group to selection
   setMuscles([...muscles, muscleGroup]);
-
-  
 }
 
 
