@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import SectionWrapper from './SectionWrapper' 
+import Button from './Button';
 
 import { SCHEMES, WORKOUTS } from '../utils/swoldier'; 
 
@@ -16,15 +17,20 @@ function Header(props){
   )
 }
 
-function Generator() {
+function Generator(props) {
+  const { poison, setPoison, muscles, setMuscles, goal, setGoal, updateWorkout } = props;
+
 
 
 //  to do something interactive we have to use the state 
 
 const [showModal, setShowModal] = useState(false);
-const [poison, setPoison] = useState('individual');
-const [muscles, setMuscles] = useState([]);
-const [goal, setGoal] = useState('strength_power');
+// const [poison, setPoison] = useState('individual');
+// const [muscles, setMuscles] = useState([]);
+// const [goal, setGoal] = useState('strength_power');
+
+// we need these three to generate the workout so we can only use it in workout component if they're at parent level not same so defining it in app.jsx
+
 
 
 function toggleModal () {
@@ -59,6 +65,7 @@ function toggleModal () {
 
   return (
     <SectionWrapper
+    id={'generate'}
       header={"generate your workout"}
       title={["It's", "huge", "o'clock"]}
     >
@@ -74,7 +81,7 @@ function toggleModal () {
           return (
             <button
               onClick={() => {
-setMuscles([]);
+                setMuscles([]);
 
                 setPoison(type);
               }}
@@ -100,28 +107,36 @@ setMuscles([]);
           onClick={toggleModal}
           className="relative  p-3 flex items-center justify-center"
         >
-          <p className='capitalize' >{muscles.length===0 ? 'Select Muscles Group' : muscles.join(' ')}</p>
+          <p className="capitalize">
+            {muscles.length === 0 ? "Select Muscles Group" : muscles.join(" ")}
+          </p>
           <i className="fa-solid absolute right-3 top-1/2 -translate-y-1/2  fa-caret-down"></i>
         </button>
         {showModal && (
-          <div className='flex flex-col px-3 pb-3' >
-            {(poison === 'individual' ? WORKOUTS[poison]:Object.keys(WORKOUTS[poison])).map((muscleGroup, muscleGroupIndex)=>{
-return (
-  <button
-    onClick={() => {
-      updateMuscles(muscleGroup);
-    }}
-    key={muscleGroupIndex}
-    className={
-      "hover:text-blue-400 duration-200 " +
-      (muscles.includes(muscleGroup) ? " text-blue-400" : " ")
-    }
-  >
-    <p className="uppercase">{muscleGroup.replaceAll("_", " ")}</p>
-  </button>
-);
+          <div className="flex flex-col px-3 pb-3">
+            {(poison === "individual"
+              ? WORKOUTS[poison]
+              : Object.keys(WORKOUTS[poison])
+            ).map((muscleGroup, muscleGroupIndex) => {
+              return (
+                <button
+                  onClick={() => {
+                    updateMuscles(muscleGroup);
+                  }}
+                  key={muscleGroupIndex}
+                  className={
+                    "hover:text-blue-400 duration-200 " +
+                    (muscles.includes(muscleGroup) ? " text-blue-400" : " ")
+                  }
+                >
+                  <p className="uppercase">
+                    {muscleGroup.replaceAll("_", " ")}
+                  </p>
+                </button>
+              );
             })}
-          </div>)}
+          </div>
+        )}
       </div>
       <Header
         index={"03"}
@@ -130,7 +145,7 @@ return (
       />
       {/* now we mapped out the array by getting all the keys of the WORKOUT object and mapped it out*/}
 
-      <div className="grid grid-cols-3  gap-4">
+      <div className="grid grid-cols-1  sm:grid-cols-3  gap-4">
         {Object.keys(SCHEMES).map((scheme, schemeIndex) => {
           return (
             <button
@@ -148,6 +163,7 @@ return (
           );
         })}
       </div>
+      <Button func={updateWorkout} text={"Formulate"}></Button>
     </SectionWrapper>
   );
 }
