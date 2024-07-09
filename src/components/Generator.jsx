@@ -33,28 +33,28 @@ function toggleModal () {
   setShowModal(!showModal);
 }
 
-function updateMuscles(muscleGroup) {
-  // muscles.filter((val) => val !== muscleGroup) creates a new array that includes all the elements from the muscles array except the muscleGroup being checked.
-  // filter is an array method that creates a new array with all elements that pass the test implemented by the provided function.
-  // In this case, the function (val) => val !== muscleGroup returns true for all elements that are not equal to muscleGroup, effectively removing muscleGroup from the array.
 
-  if (muscles.includes(muscleGroup)) {
-    setMuscles(muscles.filter((val) => val !== muscleGroup));
-    return;
-  }
+    function updateMuscles(muscleGroup) {
+      if (muscles.includes(muscleGroup)) {
+        setMuscles(muscles.filter((val) => val !== muscleGroup));
+        return;
+      }
 
-  if (muscles.length > 2) {
-    return;
-  }
-  // Single selection mode for non-'individual' poison
-  if (poison !== "individual") {
-    setMuscles([muscleGroup]);
-    // setShowModal(false);
-    return;
-  }
-  // Add muscle group to selection
-  setMuscles([...muscles, muscleGroup]);
-}
+      if (muscles.length > 2) {
+        return;
+      }
+
+      if (poison !== "individual") {
+        setMuscles([muscleGroup]);
+        setShowModal(false);
+        return;
+      }
+
+      setMuscles([...muscles, muscleGroup]);
+      if (muscles.length === 2) {
+        setShowModal(false);
+      }
+    }
 
 
   return (
@@ -74,6 +74,8 @@ function updateMuscles(muscleGroup) {
           return (
             <button
               onClick={() => {
+setMuscles([]);
+
                 setPoison(type);
               }}
               className={
@@ -98,7 +100,7 @@ function updateMuscles(muscleGroup) {
           onClick={toggleModal}
           className="relative  p-3 flex items-center justify-center"
         >
-          <p>Select Muscles Group</p>
+          <p className='capitalize' >{muscles.length===0 ? 'Select Muscles Group' : muscles.join(' ')}</p>
           <i className="fa-solid absolute right-3 top-1/2 -translate-y-1/2  fa-caret-down"></i>
         </button>
         {showModal && (
